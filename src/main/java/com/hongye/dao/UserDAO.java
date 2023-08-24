@@ -11,8 +11,6 @@ import java.util.List;
 @Mapper
 public interface UserDAO {
 
-    User queryById(@Param("userId") int userId);
-
     List<User> queryByIdList(@Param("userIdList") List<Integer> userIdList);
 
     int updateUserStatus(@Param("userId") int userId, @Param("status") int status);

@@ -24,7 +24,7 @@
         order by r.recorded_at desc
     </select>
 
-    <insert id="singleRecord">
+    <insert id="singleInsert">
         insert into user_action_record
         (
             from_id, to_id, type

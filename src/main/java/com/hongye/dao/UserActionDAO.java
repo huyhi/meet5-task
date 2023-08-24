@@ -1,5 +1,6 @@
 package com.hongye.dao;
 
+import com.hongye.model.User;
 import com.hongye.model.UserAction;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -15,9 +16,9 @@ import java.util.List;
 @Component
 public interface UserActionDAO {
 
-    List<UserAction> allVisitors(@Param("userId") int userId);
+    List<User> allVisitors(@Param("userId") int userId);
 
-    int singleRecord(UserAction action);
+    int singleInsert(UserAction action);
 
     int batchInsert(List<UserAction> list);
 

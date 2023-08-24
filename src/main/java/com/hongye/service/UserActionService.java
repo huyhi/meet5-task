@@ -59,7 +59,7 @@ public class UserActionService {
             throw new RuntimeException(String.format("userId not exist. userId: %s", userIdNotExist));
         }
 
-        userActionDAO.singleRecord(UserAction.builder()
+        userActionDAO.singleInsert(UserAction.builder()
                 .fromId(userAction.getFromUserId())
                 .toId(userAction.getToUserId())
                 .type(actionType.getCode())
