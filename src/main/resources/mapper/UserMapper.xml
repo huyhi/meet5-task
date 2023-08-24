@@ -13,6 +13,20 @@
         </where>
     </select>
 
+    <select id="queryByIdList" resultType="com.hongye.model.User">
+        select
+        id, username, occupation, avatar, email, gender, status, description, birthday,
+        created_at as createdAt,
+        updated_at as updatedAt
+        from user
+        <where>
+            id in
+            <foreach item="userId" collection="userIdList" open="(" separator="," close=")">
+                #{userId}
+            </foreach>
+        </where>
+    </select>
+
     <update id="updateUserStatus">
         update user
         <set>

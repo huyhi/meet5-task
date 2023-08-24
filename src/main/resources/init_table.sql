@@ -17,10 +17,12 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- insert into test user data.
 insert into user
 (`username`, `occupation`, `avatar`, `email`, `password`, `gender`, `status`, `description`, `birthday`)
 value
-('Alen', 'programmer', 'https://xxx.com/xx.png', 'alen@meet5.com', 'xxx', 0, 0, 'test user 1', '1991-01-01');
+('Alen', 'programmer', 'https://xxx.com/xx.png', 'alen@meet5.com', 'xxx', 0, 0, 'test user 1', '1991-01-01'),
+('Bob', 'manager', 'https://xxx.com/xx.png', 'bob@meet5.com', 'xxx', 1, 0, 'test user 2', '1994-02-01');
 
 DROP TABLE IF EXISTS `user_action_record`;
 

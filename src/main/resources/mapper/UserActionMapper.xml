@@ -9,15 +9,19 @@
         Meanwhile, I created a composite index for the 'to_id' and 'updated_at' fields,
         so the efficiency of this sorting will be relatively high.
     -->
-    <select id="allVisitors">
+    <select id="allVisitors" resultType="com.hongye.model.User">
         select
-            from_id, to_id, type, recorded_at
-        from user_action_record
+            u.id, u.username, u.occupation, u.avatar, u.email, u.gender, u.status, u.description, u.birthday,
+            u.created_at as createdAt,
+            u.updated_at as updatedAt
+        from user as u
+        inner join user_action_record as r
+        on u.id = r.from_id
         <where>
-            to_id = #{userId} and
-            type = 0    <!-- type 0 stands for visitor -->
+            r.to_id = #{userId} and
+            r.type = 0    <!-- type 0 stands for visitor -->
         </where>
-        order by recorded_at desc
+        order by r.recorded_at desc
     </select>
 
     <insert id="singleRecord">

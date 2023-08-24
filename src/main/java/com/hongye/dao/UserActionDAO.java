@@ -19,6 +19,8 @@ public interface UserActionDAO {
 
     int singleRecord(UserAction action);
 
+    int batchInsert(List<UserAction> list);
+
     int distinctUserCount(
             @Param("fromId") int fromId,
             @Param("timeLower") Date timeLower,
