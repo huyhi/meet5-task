@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hongye.dao.UserActionDAO">
+
+    <!--
+        retrieve all profile visitors of a user and sort it by updated_at field,
+
+        when a user check its visitors may want to sort it by time of viewing.
+        Meanwhile, I created a composite index for the 'to_id' and 'updated_at' fields,
+        so the efficiency of this sorting will be relatively high.
+    -->
+    <select id="allVisitors">
+        select
+            from_id, to_id, type, recorded_at
+        from user_action_record
+        <where>
+            to_id = #{userId} and
+            type = 0    <!-- type 0 stands for visitor -->
+        </where>
+        order by recorded_at desc
+    </select>
+
+    <insert id="singleRecord">
+        insert into user_action_record
+        (
+            from_id, to_id, type
+        )
+        values
+        (
+            #{fromId}, #{toId}, #{type}
+        )
+    </insert>
+
+    <select id="distinctUserCount" resultType="int">
+        select count(1) as count
+        from
+        (
+            select count(1) from user_action_record
+            <where>
+                from_id = #{fromId} and
+                recorded_at between #{timeLower} and #{timeUpper}
+            </where>
+            group by to_id
+        ) as sub_query
+    </select>
+
+</mapper>

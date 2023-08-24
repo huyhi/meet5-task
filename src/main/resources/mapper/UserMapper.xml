@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hongye.dao.UserDAO">
+
+    <select id="queryById" resultType="com.hongye.model.User">
+        select
+            id, username, occupation, avatar, email, gender, status, description, birthday,
+            created_at as createdAt,
+            updated_at as updatedAt
+        from user
+        <where>
+            id = #{userId}
+        </where>
+    </select>
+
+    <update id="updateUserStatus">
+        update user
+        <set>
+            status = #{status}
+        </set>
+        <where>
+            id = #{userId}
+        </where>
+    </update>
+
+</mapper>
