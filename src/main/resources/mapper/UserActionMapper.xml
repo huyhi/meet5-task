@@ -9,19 +9,28 @@
         Meanwhile, I created a composite index for the 'to_id' and 'updated_at' fields,
         so the efficiency of this sorting will be relatively high.
     -->
+    <!--
+        P.S. Cannot select distinct user_id with order by recorded_at clause, it would encounter a MySQL syntax error
+        Below is the best way to retrieve all the distinct visitors and order by recorded_at I can figure out.
+    -->
     <select id="allVisitors" resultType="com.hongye.model.User">
         select
-            u.id, u.username, u.occupation, u.avatar, u.email, u.gender, u.status, u.description, u.birthday,
-            u.created_at as createdAt,
-            u.updated_at as updatedAt
-        from user as u
-        inner join user_action_record as r
-        on u.id = r.from_id
+            id, username, occupation, avatar, email, gender, status, description, birthday,
+            created_at as createdAt,
+            updated_at as updatedAt
+        from user
         <where>
-            r.to_id = #{userId} and
-            r.type = 0    <!-- type 0 stands for visitor -->
+            id in (
+                select
+                    r.from_id
+                from user_action_record as r
+                where
+                    r.to_id = #{userId} and
+                    r.type = 0          <!-- type 0 stands for visitor -->
+                group by r.from_id
+                order by max(r.recorded_at) desc
+            )
         </where>
-        order by r.recorded_at desc
     </select>
 
     <insert id="singleInsert">
@@ -36,16 +45,11 @@
     </insert>
 
     <select id="distinctUserCount" resultType="int">
-        select count(1) as count
-        from
-        (
-            select count(1) from user_action_record
-            <where>
-                from_id = #{fromId} and
-                recorded_at between #{timeLower} and #{timeUpper}
-            </where>
-            group by to_id
-        ) as sub_query
+        select count(distinct to_id) from user_action_record
+        <where>
+            from_id = #{fromId} and
+            recorded_at between #{timeLower} and #{timeUpper}
+        </where>
     </select>
 
 </mapper>
